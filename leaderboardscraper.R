@@ -12,17 +12,23 @@ webpageScore = readLines("http://www.piugame.com/piu.xx/leaderboard/xx_total_ran
 
 #some bad regex
 #rankExpRegex = '*rank_out*'
-countryExpRegex = '*chart_country*'
-levelExpRegex = '*chart_lv m_lv"*'
-nameExpRegex = '*chart_id*'
-scoreExpRegex = '*chart_score exp*'
+countryRegex = '*chart_country*'
+levelRegex = '*chart_lv m_lv"*'
+nameRegex = '*chart_id*'
+scoreRegex = '*chart_score*'
 
 #grep dat
 #rankExpRaw = grep(rankExpRegex, webpageExp, value=TRUE)
-countryExpRaw = grep(countryExpRegex, webpageExp, value=TRUE)
-levelExpRaw = grep(levelExpRegex, webpageExp, value=TRUE)
-nameExpRaw = grep(nameExpRegex, webpageExp, value=TRUE)
-scoreExpRaw = grep(scoreExpRegex, webpageExp, value=TRUE)
+countryExpRaw = grep(countryRegex, webpageExp, value=TRUE)
+levelExpRaw = grep(levelRegex, webpageExp, value=TRUE)
+nameExpRaw = grep(nameRegex, webpageExp, value=TRUE)
+scoreExpRaw = grep(scoreRegex, webpageExp, value=TRUE)
+
+countryScoreRaw = grep(countryRegex, webpageScore, value=TRUE)
+levelScoreRaw = grep(levelRegex, webpageScore, value=TRUE)
+nameScoreRaw = grep(nameRegex, webpageScore, value=TRUE)
+scoreScoreRaw = grep(scoreRegex, webpageScore, value=TRUE)
+
 
 #clean up data with more regex
 clearTags = "^[^>]*>|<.*"
@@ -33,9 +39,16 @@ levelExp = gsub("[^0-9]", "", levelExpRaw)
 nameExp = gsub(clearTags, "", nameExpRaw)
 scoreExp = gsub("[^0-9]", "", scoreExpRaw)
 
+countryScore = gsub("[^0-9]", "", countryScoreRaw)
+levelScore = gsub("[^0-9]", "", levelScoreRaw)
+nameScore = gsub(clearTags, "", nameScoreRaw)
+scoreScore = gsub("[^0-9]", "", scoreScoreRaw)
+
+
 
 piuExp1000.df = data.frame(countryExp,as.numeric(levelExp),nameExp,as.numeric(scoreExp), stringsAsFactors=FALSE)
-
 colnames(piuExp1000.df) = c("country", "level", "name", "exp")
 
+piuScore1000.df = data.frame(countryScore,as.numeric(levelScore),nameScore,as.numeric(scoreScore), stringsAsFactors=FALSE)
+colnames(piuScore1000.df) = c("country", "level", "name", "total_score")
 
